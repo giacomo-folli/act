@@ -1,0 +1,23 @@
+done = []
+doing = []
+
+[[todo]]
+title = "Finish version 0.1.0"
+description = "Finish the initial version of the cli"
+estimated_duration = "1h"
+time_spent = "0h"
+tags = []
+
+[[todo]]
+title = "Study ACE"
+description = ""
+estimated_duration = ""
+time_spent = ""
+tags = []
+
+[[todo]]
+title = "Finish Rust Project"
+description = ""
+estimated_duration = ""
+time_spent = ""
+tags = []

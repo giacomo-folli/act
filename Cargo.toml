@@ -1,0 +1,11 @@
+[package]
+authors = ["Giacomo Folli <giacomofolli@proton.me>"]
+name = "just-rust-it"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+serde = { version = "1.0.228", features = ["derive"] }
+clap = { version = "4.0", features = ["derive"] }
+thiserror = "2.0.18"
+toml = "1.1.2"
