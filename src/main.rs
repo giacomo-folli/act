@@ -1,5 +1,6 @@
 use clap::{Parser, Subcommand};
 use serde::{Deserialize, Serialize};
+use toml::value::{Date, Time};
 use std::{
     fs::{self, File},
     io::Write,
@@ -53,6 +54,7 @@ struct Task {
     description: String,
     estimated_duration: String,
     time_spent: String,
+    created_at: String,
     tags: Vec<String>,
 }
 
@@ -63,6 +65,7 @@ impl Task {
             description: String::new(),
             estimated_duration: String::new(),
             time_spent: String::new(),
+            created_at: chrono::Local::now().to_string(),
             tags: vec![],
         }
     }
