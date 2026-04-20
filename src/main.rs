@@ -1,6 +1,5 @@
 use clap::{Parser, Subcommand};
 use serde::{Deserialize, Serialize};
-use toml::value::{Date, Time};
 use std::{
     fs::{self, File},
     io::Write,
@@ -87,7 +86,7 @@ impl State {
         }
     }
 
-    fn write_state(&self, file_path: &String) -> Result<(), StateError> {
+    fn write_state(&self, file_path: &str) -> Result<(), StateError> {
         let res = toml::to_string_pretty(self)?;
         let mut file = File::create(file_path)?;
 
@@ -96,7 +95,7 @@ impl State {
         Ok(())
     }
 
-    fn load_state(&mut self, file_path: &String) -> Result<(), StateError> {
+    fn load_state(&mut self, file_path: &str) -> Result<(), StateError> {
         let file_content = fs::read_to_string(file_path)?;
         let parsed = toml::from_str::<State>(&file_content)?;
 
@@ -112,11 +111,15 @@ fn main() -> Result<(), StateError> {
     let mut state = State::new();
 
     let args = Args::parse();
-    let _ = state.load_state(&args.file);
+    match state.load_state(&args.file) {
+        Ok(()) => {}
+        // Err(StateError::IoError(err)) if err.kind() == std::io::ErrorKind::NotFound => {}
+        Err(err) => return Err(err),
+    }
 
     match args.command {
         Command::View { compact } => view_state(&args.file, compact)?,
-        Command::Add { title } => add_task(state, &args.file, title)?,
+        Command::Add { title } => add_task(&mut state, &args.file, title)?,
         Command::Start => todo!(),
         Command::Complete => todo!(),
     }
@@ -145,8 +148,8 @@ fn view_state(state_file_path: &str, compact: bool) -> Result<(), StateError> {
 }
 
 fn add_task(
-    mut state: State,
-    state_file_path: &String,
+    state: &mut State,
+    state_file_path: &str,
     task_title: String,
 ) -> Result<(), StateError> {
     state.todo.push(Task::new(task_title));
