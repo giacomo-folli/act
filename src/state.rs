@@ -22,37 +22,24 @@ pub enum StateError {
 
 #[derive(Serialize, Deserialize)]
 pub struct State {
-    pub todo: Vec<Task>,
-    pub done: Vec<Task>,
-    pub doing: Vec<Task>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct FileState {
     pub tasks: Vec<Task>,
 }
 
 impl State {
     pub fn new() -> Self {
-        Self {
-            todo: vec![],
-            done: vec![],
-            doing: vec![],
-        }
+        Self { tasks: vec![] }
+    }
+
+    pub fn get_state(&self, state: DefaultState) -> Vec<Task> {
+        self.tasks
+            .iter()
+            .filter(|task| task.state == state)
+            .cloned()
+            .collect()
     }
 
     pub fn write_state(&self, file_path: &str) -> Result<(), StateError> {
-        let mut file_state = FileState { tasks: vec![] };
-
-        let mut todos = self.todo.clone();
-        let mut doings = self.doing.clone();
-        let mut dones = self.done.clone();
-
-        file_state.tasks.append(&mut todos);
-        file_state.tasks.append(&mut doings);
-        file_state.tasks.append(&mut dones);
-
-        let res = toml::to_string(&file_state)?;
+        let res = toml::to_string(&self)?;
         let mut file = File::create(file_path)?;
 
         file.write_all(res.as_bytes())?;
@@ -66,25 +53,13 @@ impl State {
         // Parse the file content into a State struct,
         // or create a new empty State if the file is empty
         if file_content.trim().is_empty() {
-            self.todo = vec![];
-            self.done = vec![];
-            self.doing = vec![];
+            self.tasks = vec![];
         } else {
-            let file_state = toml::from_str::<FileState>(&file_content)?;
+            let parsed = toml::from_str::<State>(&file_content)?;
 
-            self.doing = filter_for_state(&file_state.tasks, DefaultState::Doing);
-            self.done = filter_for_state(&file_state.tasks, DefaultState::Done);
-            self.todo = filter_for_state(&file_state.tasks, DefaultState::Todo);
+            self.tasks = parsed.tasks;
         };
 
         Ok(())
     }
-}
-
-fn filter_for_state(tasks: &Vec<Task>, state: DefaultState) -> Vec<Task> {
-    tasks
-        .iter()
-        .filter(|task| task.state == state)
-        .cloned()
-        .collect()
 }

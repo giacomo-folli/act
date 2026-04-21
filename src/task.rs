@@ -1,6 +1,5 @@
 use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
-use std::vec;
 
 #[derive(Serialize, Deserialize, PartialEq, Clone)]
 pub enum DefaultState {
@@ -15,10 +14,7 @@ pub struct Task {
     pub title: String,
     pub state: DefaultState,
     pub description: String,
-    pub estimated_duration: String,
-    pub time_spent: String,
     pub created_at: String,
-    pub tags: Vec<String>,
 }
 
 impl Task {
@@ -27,10 +23,7 @@ impl Task {
             id: nanoid!(8),
             state: DefaultState::Todo,
             description: String::new(),
-            estimated_duration: String::new(),
-            time_spent: String::new(),
             created_at: chrono::Local::now().to_string(),
-            tags: vec![],
             title,
         }
     }

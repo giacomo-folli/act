@@ -19,7 +19,11 @@ enum Command {
     /// Move a task in #doing
     Start { id: String },
     /// Move an active task in #done
-    Complete,
+    Complete { id: String },
+    /// Delete a task
+    Delete { id: String },
+    /// Reset the state file
+    Clear,
 }
 
 /// Simple task managment cli tool
@@ -48,7 +52,9 @@ fn main() -> Result<(), StateError> {
         Command::View { compact } => view_state(&args.file, compact)?,
         Command::Add { title } => add_task(&mut state, &args.file, title)?,
         Command::Start { id } => start_task(&mut state, &args.file, id)?,
-        Command::Complete => todo!(),
+        Command::Delete { id } => delete_task(&mut state, &args.file, id)?,
+        Command::Complete { id } => complete_task(&mut state, &args.file, id)?,
+        Command::Clear => clear_state(&mut state, &args.file)?,
     }
 
     Ok(())
@@ -79,14 +85,36 @@ fn view_state(state_file_path: &str, compact: bool) -> Result<(), StateError> {
 }
 
 fn start_task(state: &mut State, state_file_path: &str, task_id: String) -> Result<(), StateError> {
-    if state.todo.is_empty() {
+    if state.get_state(task::DefaultState::Todo).is_empty() {
         println!("No tasks in todo! Try to add one.");
         return Ok(());
     }
 
-    for task in state.todo.iter_mut() {
+    for task in state.tasks.iter_mut() {
         if task.id == task_id {
             task.update_state(task::DefaultState::Doing);
+            break;
+        }
+    }
+
+    state.write_state(state_file_path)?;
+
+    Ok(())
+}
+
+fn complete_task(
+    state: &mut State,
+    state_file_path: &str,
+    task_id: String,
+) -> Result<(), StateError> {
+    if state.get_state(task::DefaultState::Doing).is_empty() {
+        println!("No tasks in doing! Try to start one.");
+        return Ok(());
+    }
+
+    for task in state.tasks.iter_mut() {
+        if task.id == task_id {
+            task.update_state(task::DefaultState::Done);
             break;
         }
     }
@@ -101,7 +129,32 @@ fn add_task(
     state_file_path: &str,
     task_title: String,
 ) -> Result<(), StateError> {
-    state.todo.push(Task::new(task_title));
+    state.tasks.push(Task::new(task_title));
+
+    state.write_state(state_file_path)?;
+
+    Ok(())
+}
+
+fn delete_task(
+    state: &mut State,
+    state_file_path: &str,
+    task_id: String,
+) -> Result<(), StateError> {
+    state.tasks = state
+        .tasks
+        .iter()
+        .filter(|task| task.id != task_id)
+        .cloned()
+        .collect();
+
+    state.write_state(state_file_path)?;
+
+    Ok(())
+}
+
+fn clear_state(state: &mut State, state_file_path: &str) -> Result<(), StateError> {
+    state.tasks = vec![];
 
     state.write_state(state_file_path)?;
 
