@@ -1,11 +1,11 @@
+use crate::state::{State, StateError};
+use crate::task::Task;
+
+mod state;
+mod task;
+
 use clap::{Parser, Subcommand};
-use serde::{Deserialize, Serialize};
-use std::{
-    fs::{self, File},
-    io::Write,
-    vec,
-};
-use thiserror::Error;
+use std::fs;
 
 #[derive(Subcommand, Debug)]
 enum Command {
@@ -17,12 +17,12 @@ enum Command {
     /// Add a new task in #todo
     Add { title: String },
     /// Move a task in #doing
-    Start,
+    Start { id: String },
     /// Move an active task in #done
     Complete,
 }
 
-/// Simple program to greet a person
+/// Simple task managment cli tool
 #[derive(Parser, Debug)]
 #[command(version, about, author, long_about = None)]
 struct Args {
@@ -35,92 +35,19 @@ struct Args {
     file: String,
 }
 
-#[derive(Error, Debug)]
-enum StateError {
-    #[error("Failed to read state file: {0}")]
-    IoError(#[from] std::io::Error),
-
-    #[error("Failed to serialize state: {0}")]
-    SerializeError(#[from] toml::ser::Error),
-
-    #[error("Failed to parse state file: {0}")]
-    DeserializeError(#[from] toml::de::Error),
-}
-
-#[derive(Serialize, Deserialize)]
-struct Task {
-    title: String,
-    description: String,
-    estimated_duration: String,
-    time_spent: String,
-    created_at: String,
-    tags: Vec<String>,
-}
-
-impl Task {
-    fn new(title: String) -> Self {
-        Self {
-            title,
-            description: String::new(),
-            estimated_duration: String::new(),
-            time_spent: String::new(),
-            created_at: chrono::Local::now().to_string(),
-            tags: vec![],
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize)]
-struct State {
-    todo: Vec<Task>,
-    done: Vec<Task>,
-    doing: Vec<Task>,
-}
-
-impl State {
-    fn new() -> Self {
-        Self {
-            todo: vec![],
-            done: vec![],
-            doing: vec![],
-        }
-    }
-
-    fn write_state(&self, file_path: &str) -> Result<(), StateError> {
-        let res = toml::to_string_pretty(self)?;
-        let mut file = File::create(file_path)?;
-
-        file.write_all(res.as_bytes())?;
-
-        Ok(())
-    }
-
-    fn load_state(&mut self, file_path: &str) -> Result<(), StateError> {
-        let file_content = fs::read_to_string(file_path)?;
-        let parsed = toml::from_str::<State>(&file_content)?;
-
-        self.doing = parsed.doing;
-        self.done = parsed.done;
-        self.todo = parsed.todo;
-
-        Ok(())
-    }
-}
-
 fn main() -> Result<(), StateError> {
     let mut state = State::new();
 
     let args = Args::parse();
     match state.load_state(&args.file) {
         Ok(()) => {}
-        // Err(StateError::IoError(err)) if err.kind() == std::io::ErrorKind::NotFound => {}
         Err(err) => return Err(err),
     }
 
     match args.command {
         Command::View { compact } => view_state(&args.file, compact)?,
         Command::Add { title } => add_task(&mut state, &args.file, title)?,
-        Command::Start => todo!(),
+        Command::Start { id } => start_task(&mut state, &args.file, id)?,
         Command::Complete => todo!(),
     }
 
@@ -143,7 +70,29 @@ fn view_state(state_file_path: &str, compact: bool) -> Result<(), StateError> {
             .join("\n")
     }
 
+    if file_content.is_empty() {
+        file_content = "The state is empty! Try to add some tasks.".to_string();
+    }
+
     println!("{}", file_content);
+    Ok(())
+}
+
+fn start_task(state: &mut State, state_file_path: &str, task_id: String) -> Result<(), StateError> {
+    if state.todo.is_empty() {
+        println!("No tasks in todo! Try to add one.");
+        return Ok(());
+    }
+
+    for task in state.todo.iter_mut() {
+        if task.id == task_id {
+            task.update_state(task::DefaultState::Doing);
+            break;
+        }
+    }
+
+    state.write_state(state_file_path)?;
+
     Ok(())
 }
 
