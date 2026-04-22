@@ -1,10 +1,10 @@
-# Taskman
+# Act
 
 A simple, file-based CLI todo manager written in Rust. Tasks persist in a human-readable TOML file.
 
 ## Overview
 
-Taskman stores tasks in `tasks.toml` in the current directory. Each task has a title, optional description, and one of three statuses: `todo`, `doing`, or `done`.
+Act stores tasks in `tasks.toml` in the current directory. Each task has a title, optional description, and one of three statuses: `todo`, `doing`, or `done`.
 
 ## Requirements
 
@@ -47,14 +47,14 @@ updated_at = "2026-04-21T10:00:00Z"
 ## CLI Interface
 
 
-- [x] taskman init                          # Create tasks.toml
-- [ ] taskman add "Title" -d "Description"  # Add task
-- [x] taskman list                          # List all tasks
-- [ ] taskman list --status todo            # Filter by status
-- [x] taskman show <id>                     # Show task details
-- [ ] taskman edit <id> -t "New Title"      # Edit task
-- [ ] taskman status <id> doing             # Update status
-- [x] taskman delete <id>                   # Remove task
+- [x] act init                          # Create tasks.toml
+- [ ] act add "Title" -d "Description"  # Add task
+- [x] act list                          # List all tasks
+- [ ] act list --status todo            # Filter by status
+- [x] act show <id>                     # Show task details
+- [ ] act edit <id> -t "New Title"      # Edit task
+- [ ] act status <id> doing             # Update status
+- [x] act delete <id>                   # Remove task
 
 
 ## Roadmap
@@ -80,7 +80,7 @@ updated_at = "2026-04-21T10:00:00Z"
 ### Milestone 4: Nice-to-Haves (Backlog)
 - [ ] Task priorities
 - [ ] Due dates
-- [ ] Global config file (~/.config/taskman/)
+- [ ] Global config file (~/.config/act/)
 - [ ] Export to JSON/CSV
 
 ## Tech Stack
