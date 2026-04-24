@@ -52,7 +52,7 @@ updated_at = "2026-04-21T10:00:00Z"
 - [x] act list                          # List all tasks
 - [ ] act list --status todo            # Filter by status
 - [x] act show <id>                     # Show task details
-- [ ] act edit <id> -t "New Title"      # Edit task
+- [x] act edit <id> -t "New Title"      # Edit task
 - [ ] act status <id> doing             # Update status
 - [x] act delete <id>                   # Remove task
 

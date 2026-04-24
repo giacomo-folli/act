@@ -11,6 +11,14 @@ pub enum Command {
     // #[arg(short, long)]
     // status: "DefaultState"
     // }
+    /// Edit a task
+    Edit {
+        id: String,
+        #[arg(short, long, required_unless_present = "title")]
+        description: Option<String>,
+        #[arg(short, long, required_unless_present = "description")]
+        title: Option<String>,
+    },
     /// Show a specific task
     Show { id: String },
     /// Add a new task in #todo

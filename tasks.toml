@@ -1,7 +1,7 @@
 [[tasks]]
 id = "UHLaIonm"
-title = "Test task 1"
-description = ""
+title = "Test task 0"
+description = "A task to test the cli"
 state = "todo"
 created_at = "Tue, 21 Apr 2026 22:06:35 +0200"
 updated_at = "Tue, 21 Apr 2026 22:06:35 +0200"

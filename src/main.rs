@@ -21,6 +21,11 @@ fn main() -> anyhow::Result<()> {
             commands::list_tasks(&tasks)
         }
         Command::Add { title, description } => add_task(title, description)?,
+        Command::Edit {
+            id,
+            title,
+            description,
+        } => edit_task(id, &title, &description)?,
         Command::Start { id } => start_task(id)?,
         Command::Show { id } => show_task(id)?,
         Command::Delete { id } => delete_task(id)?,
@@ -84,6 +89,30 @@ fn add_task(task_title: String, task_desc: Option<String>) -> Result<(), StateEr
     let mut tasks = storage::load()?;
 
     tasks.push(Task::new(task_title, task_desc));
+
+    let _ = storage::save(&tasks);
+
+    Ok(())
+}
+
+fn edit_task(
+    id: String,
+    task_title: &Option<String>,
+    task_description: &Option<String>,
+) -> Result<(), StateError> {
+    let mut tasks = storage::load()?;
+
+    for task in tasks.iter_mut() {
+        if task.id == id {
+            if let Some(desc) = task_description {
+                task.description = Some(desc.clone());
+            }
+
+            if let Some(title) = task_title {
+                task.title = title.clone();
+            }
+        }
+    }
 
     let _ = storage::save(&tasks);
 
