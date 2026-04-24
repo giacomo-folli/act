@@ -20,7 +20,7 @@ fn main() -> anyhow::Result<()> {
             let tasks = storage::load()?;
             commands::list_tasks(&tasks)
         }
-        Command::Add { title, description } => add_task(title, description)?,
+        Command::Add { title, description } => add_task(title, &description)?,
         Command::Edit {
             id,
             title,
@@ -85,10 +85,15 @@ fn complete_task(task_id: String) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn add_task(task_title: String, task_desc: Option<String>) -> Result<(), StateError> {
+fn add_task(task_title: String, task_description: &Option<String>) -> Result<(), StateError> {
     let mut tasks = storage::load()?;
+    let mut new_task = Task::new(task_title);
 
-    tasks.push(Task::new(task_title, task_desc));
+    if let Some(desc) = task_description {
+        new_task.description = Some(desc.clone());
+    }
+
+    tasks.push(new_task);
 
     let _ = storage::save(&tasks);
 
@@ -106,10 +111,12 @@ fn edit_task(
         if task.id == id {
             if let Some(desc) = task_description {
                 task.description = Some(desc.clone());
+                task.update_time();
             }
 
             if let Some(title) = task_title {
                 task.title = title.clone();
+                task.update_time();
             }
         }
     }

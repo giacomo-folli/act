@@ -49,4 +49,8 @@ impl Task {
             description,
         }
     }
+
+    pub fn update_time(&mut self) {
+        self.updated_at = chrono::Local::now().to_rfc2822();
+    }
 }

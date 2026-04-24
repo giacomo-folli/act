@@ -9,7 +9,7 @@ updated_at = "Tue, 21 Apr 2026 22:06:35 +0200"
 [[tasks]]
 id = "pL2wLLwo"
 title = "Test task 1"
-description = ""
+description = "Check updated time"
 state = "todo"
 created_at = "Tue, 21 Apr 2026 22:15:36 +0200"
 updated_at = "Tue, 21 Apr 2026 22:15:36 +0200"
