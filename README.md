@@ -48,7 +48,7 @@ updated_at = "2026-04-21T10:00:00Z"
 
 
 - [x] act init                          # Create tasks.toml
-- [ ] act add "Title" -d "Description"  # Add task
+- [x] act add "Title" -d "Description"  # Add task
 - [x] act list                          # List all tasks
 - [ ] act list --status todo            # Filter by status
 - [x] act show <id>                     # Show task details
