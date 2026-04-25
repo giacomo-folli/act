@@ -1,3 +1,4 @@
+use clap::ValueEnum;
 use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -14,7 +15,7 @@ pub enum StateError {
     Deserialize(#[from] toml::de::Error),
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, ValueEnum, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum DefaultState {
     Todo,
@@ -28,7 +29,7 @@ pub struct State {
     pub tasks: Vec<Task>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Task {
     pub id: String,
     pub title: String,

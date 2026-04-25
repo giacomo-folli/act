@@ -24,9 +24,9 @@ pub fn load() -> Result<Vec<Task>, StateError> {
     Ok(parsed.tasks)
 }
 
-pub fn save(tasks: &Vec<Task>) -> Result<(), StateError> {
+pub fn save(tasks: &[Task]) -> Result<(), StateError> {
     let state = State {
-        tasks: tasks.clone(),
+        tasks: tasks.to_owned(),
     };
 
     let res = toml::to_string(&state)?;

@@ -2,15 +2,17 @@
 
 use clap::{Parser, Subcommand};
 
+use crate::models::DefaultState;
+
 #[derive(Subcommand, Debug)]
 pub enum Command {
     /// Create the todo.toml state file
     Init,
     /// View the current state
-    List, // {
-    // #[arg(short, long)]
-    // status: "DefaultState"
-    // }
+    List {
+        #[arg(short, long)]
+        status: Option<DefaultState>,
+    },
     /// Edit a task
     Edit {
         id: String,
@@ -27,19 +29,10 @@ pub enum Command {
         #[arg(short, long)]
         description: Option<String>,
     },
-    /// Move a task in #doing
-    Start { id: String },
     /// Change a task's status
-    // Status {
-    //     id: String,
-    //     status: DefaultState
-    // },
-    /// Move an active task in #done
-    Complete { id: String },
+    Status { id: String, status: DefaultState },
     /// Delete a task
     Delete { id: String },
-    /// Reset the state file
-    Clear,
 }
 
 /// Simple task managment cli tool

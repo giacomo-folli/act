@@ -50,10 +50,10 @@ updated_at = "2026-04-21T10:00:00Z"
 - [x] act init                          # Create tasks.toml
 - [x] act add "Title" -d "Description"  # Add task
 - [x] act list                          # List all tasks
-- [ ] act list --status todo            # Filter by status
+- [x] act list --status todo            # Filter by status
 - [x] act show <id>                     # Show task details
 - [x] act edit <id> -t "New Title"      # Edit task
-- [ ] act status <id> doing             # Update status
+- [x] act status <id> doing             # Update status
 - [x] act delete <id>                   # Remove task
 
 
@@ -66,7 +66,7 @@ updated_at = "2026-04-21T10:00:00Z"
 - [x] `list` with basic table output
 
 ### Milestone 2: CRUD (Week 2)
-- [ ] `show`, `edit`, `status`, `delete` commands
+- [x] `show`, `edit`, `status`, `delete` commands
 - [x] UUID generation for task IDs
 - [x] Timestamps (created_at, updated_at)
 - [ ] Input validation
@@ -75,7 +75,7 @@ updated_at = "2026-04-21T10:00:00Z"
 - [ ] Consider switching to `ratatui` 
 - [ ] Status-based filtering
 - [ ] Error handling with anyhow/thiserror
-- [ ] Integration tests
+- [ ] Refactor filtering methods, etc...
 
 ### Milestone 4: Nice-to-Haves (Backlog)
 - [ ] Task priorities

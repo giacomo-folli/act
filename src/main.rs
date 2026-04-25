@@ -1,6 +1,6 @@
 use crate::{
     cli::{Args, Command},
-    models::{StateError, Task},
+    models::{DefaultState, StateError, Task},
 };
 use clap::Parser;
 
@@ -10,14 +10,17 @@ mod models;
 mod storage;
 
 fn main() -> anyhow::Result<()> {
-    // let mut state = State { tasks: vec![] };
-
     let args = Args::parse();
 
     match args.command {
         Command::Init => storage::init()?,
-        Command::List => {
-            let tasks = storage::load()?;
+        Command::List { status } => {
+            let mut tasks = storage::load()?;
+
+            if let Some(res) = status {
+                tasks = tasks.iter().filter(|ts| ts.state == res).cloned().collect();
+            }
+
             commands::list_tasks(&tasks)
         }
         Command::Add { title, description } => add_task(title, &description)?,
@@ -26,11 +29,9 @@ fn main() -> anyhow::Result<()> {
             title,
             description,
         } => edit_task(id, &title, &description)?,
-        Command::Start { id } => start_task(id)?,
+        Command::Status { id, status } => update_task_status(id, status)?,
         Command::Show { id } => show_task(id)?,
         Command::Delete { id } => delete_task(id)?,
-        Command::Complete { id } => complete_task(id)?,
-        Command::Clear => clear_state()?,
     }
 
     Ok(())
@@ -43,6 +44,7 @@ fn show_task(task_id: String) -> anyhow::Result<()> {
     for task in tasks.iter() {
         if task.id == task_id {
             file_content = toml::to_string(&task)?;
+
             break;
         }
     }
@@ -55,27 +57,14 @@ fn show_task(task_id: String) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn start_task(task_id: String) -> anyhow::Result<()> {
+fn update_task_status(task_id: String, task_status: DefaultState) -> anyhow::Result<()> {
     let mut tasks = storage::load()?;
 
     for task in tasks.iter_mut() {
         if task.id == task_id {
-            task.state = models::DefaultState::Doing;
-            break;
-        }
-    }
+            task.state = task_status;
+            task.update_time();
 
-    let _ = storage::save(&tasks);
-
-    Ok(())
-}
-
-fn complete_task(task_id: String) -> anyhow::Result<()> {
-    let mut tasks = storage::load()?;
-
-    for task in tasks.iter_mut() {
-        if task.id == task_id {
-            task.state = models::DefaultState::Done;
             break;
         }
     }
@@ -112,11 +101,15 @@ fn edit_task(
             if let Some(desc) = task_description {
                 task.description = Some(desc.clone());
                 task.update_time();
+
+                break;
             }
 
             if let Some(title) = task_title {
                 task.title = title.clone();
                 task.update_time();
+
+                break;
             }
         }
     }
@@ -136,12 +129,6 @@ fn delete_task(task_id: String) -> anyhow::Result<()> {
         .collect();
 
     let _ = storage::save(&tasks);
-
-    Ok(())
-}
-
-fn clear_state() -> anyhow::Result<()> {
-    let _ = storage::save(&vec![]);
 
     Ok(())
 }
