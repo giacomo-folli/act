@@ -1,8 +1,9 @@
+use clap::Parser;
+
 use crate::{
     cli::{Args, Command},
     models::{DefaultState, StateError, Task},
 };
-use clap::Parser;
 
 mod cli;
 mod commands;
@@ -22,13 +23,9 @@ fn main() -> anyhow::Result<()> {
             }
 
             commands::list_tasks(&tasks)
-        }
+        },
         Command::Add { title, description } => add_task(title, &description)?,
-        Command::Edit {
-            id,
-            title,
-            description,
-        } => edit_task(id, &title, &description)?,
+        Command::Edit { id, title, description } => edit_task(id, &title, &description)?,
         Command::Status { id, status } => update_task_status(id, status)?,
         Command::Show { id } => show_task(id)?,
         Command::Delete { id } => delete_task(id)?,
@@ -74,10 +71,7 @@ fn update_task_status(task_id: String, task_status: DefaultState) -> anyhow::Res
     Ok(())
 }
 
-fn add_task(
-    task_title: Option<String>,
-    task_description: &Option<String>,
-) -> Result<(), StateError> {
+fn add_task(task_title: Option<String>, task_description: &Option<String>) -> Result<(), StateError> {
     let mut tasks = storage::load()?;
     let task_def_title;
 
@@ -100,11 +94,7 @@ fn add_task(
     Ok(())
 }
 
-fn edit_task(
-    id: String,
-    task_title: &Option<String>,
-    task_description: &Option<String>,
-) -> Result<(), StateError> {
+fn edit_task(id: String, task_title: &Option<String>, task_description: &Option<String>) -> Result<(), StateError> {
     let mut tasks = storage::load()?;
 
     for task in tasks.iter_mut() {
@@ -133,11 +123,7 @@ fn edit_task(
 fn delete_task(task_id: String) -> anyhow::Result<()> {
     let mut tasks = storage::load()?;
 
-    tasks = tasks
-        .iter()
-        .filter(|task| task.id != task_id)
-        .cloned()
-        .collect();
+    tasks = tasks.iter().filter(|task| task.id != task_id).cloned().collect();
 
     let _ = storage::save(&tasks);
 

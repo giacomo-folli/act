@@ -31,12 +31,12 @@ pub struct State {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Task {
-    pub id: String,
-    pub title: String,
+    pub id:          String,
+    pub title:       String,
     pub description: Option<String>,
-    pub state: DefaultState,
-    pub created_at: String,
-    pub updated_at: String,
+    pub state:       DefaultState,
+    pub created_at:  String,
+    pub updated_at:  String,
 }
 
 impl Task {

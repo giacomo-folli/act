@@ -15,17 +15,17 @@ pub enum Command {
     },
     /// Edit a task
     Edit {
-        id: String,
+        id:          String,
         #[arg(short, long, required_unless_present = "title")]
         description: Option<String>,
         #[arg(short, long, required_unless_present = "description")]
-        title: Option<String>,
+        title:       Option<String>,
     },
     /// Show a specific task
     Show { id: String },
     /// Add a new task in #todo
     Add {
-        title: Option<String>,
+        title:       Option<String>,
         #[arg(short, long)]
         description: Option<String>,
     },

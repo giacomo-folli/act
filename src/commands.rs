@@ -1,27 +1,24 @@
 use chrono::DateTime;
 use colored::Colorize;
-use comfy_table::presets::UTF8_HORIZONTAL_ONLY;
-use comfy_table::{Attribute, Cell, Color, ColumnConstraint, ContentArrangement, Table, Width};
+use comfy_table::{
+    Attribute, Cell, Color, ColumnConstraint, ContentArrangement, Table, Width, presets::UTF8_HORIZONTAL_ONLY,
+};
 
 use crate::models::{DefaultState, Task};
 
 pub fn list_tasks(tasks: &[Task]) {
     let mut table = Table::new();
 
-    table
-        .load_preset(UTF8_HORIZONTAL_ONLY)
-        .set_content_arrangement(ContentArrangement::DynamicFullWidth)
-        .set_header(vec![
+    table.load_preset(UTF8_HORIZONTAL_ONLY).set_content_arrangement(ContentArrangement::DynamicFullWidth).set_header(
+        vec![
             Cell::new("ID").add_attribute(Attribute::Dim),
             Cell::new("TITLE").add_attribute(Attribute::Dim),
             Cell::new("STATUS").add_attribute(Attribute::Dim),
             Cell::new("UPDATED").add_attribute(Attribute::Dim),
-        ]);
+        ],
+    );
 
-    table
-        .column_mut(1)
-        .unwrap()
-        .set_constraint(ColumnConstraint::LowerBoundary(Width::Fixed(30)));
+    table.column_mut(1).unwrap().set_constraint(ColumnConstraint::LowerBoundary(Width::Fixed(30)));
 
     for task in tasks {
         table.add_row(vec![
@@ -51,18 +48,9 @@ fn format_relative_time(timestamp_str: &str) -> String {
 }
 
 fn format_footer(tasks: &[Task]) -> String {
-    let done = tasks
-        .iter()
-        .filter(|t| t.state == DefaultState::Done)
-        .count();
-    let doing = tasks
-        .iter()
-        .filter(|t| t.state == DefaultState::Doing)
-        .count();
-    let todo = tasks
-        .iter()
-        .filter(|t| t.state == DefaultState::Todo)
-        .count();
+    let done = tasks.iter().filter(|t| t.state == DefaultState::Done).count();
+    let doing = tasks.iter().filter(|t| t.state == DefaultState::Doing).count();
+    let todo = tasks.iter().filter(|t| t.state == DefaultState::Todo).count();
 
     format!(
         "{} tasks  ·  {} done  ·  {} doing  ·  {} todo",
@@ -75,15 +63,9 @@ fn format_footer(tasks: &[Task]) -> String {
 
 fn format_status(status: &DefaultState) -> Cell {
     match status {
-        DefaultState::Todo => Cell::new(" todo  ")
-            .fg(Color::Grey)
-            .bg(Color::AnsiValue(237)),
-        DefaultState::Doing => Cell::new(" doing ")
-            .fg(Color::Blue)
-            .bg(Color::AnsiValue(17)),
-        DefaultState::Done => Cell::new(" done  ")
-            .fg(Color::Green)
-            .bg(Color::AnsiValue(22)),
+        DefaultState::Todo => Cell::new(" todo  ").fg(Color::Grey).bg(Color::AnsiValue(237)),
+        DefaultState::Doing => Cell::new(" doing ").fg(Color::Blue).bg(Color::AnsiValue(17)),
+        DefaultState::Done => Cell::new(" done  ").fg(Color::Green).bg(Color::AnsiValue(22)),
     }
 }
 

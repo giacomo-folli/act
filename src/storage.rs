@@ -1,8 +1,9 @@
-use anyhow::Result;
 use std::{
     fs::{self, File},
     io::Write,
 };
+
+use anyhow::Result;
 
 use crate::models::{State, StateError, Task};
 
@@ -25,9 +26,7 @@ pub fn load() -> Result<Vec<Task>, StateError> {
 }
 
 pub fn save(tasks: &[Task]) -> Result<(), StateError> {
-    let state = State {
-        tasks: tasks.to_owned(),
-    };
+    let state = State { tasks: tasks.to_owned() };
 
     let res = toml::to_string(&state)?;
 
