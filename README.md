@@ -1,10 +1,10 @@
-# Act
+# Grind
 
 A simple, file-based CLI todo manager written in Rust. Tasks persist in a human-readable TOML file.
 
 ## Overview
 
-Act stores tasks in `tasks.toml` in the current directory. Each task has a title, optional description, and one of three statuses: `todo`, `doing`, or `done`.
+Grind stores tasks in `tasks.toml` in the current directory. Each task has a title, optional description, and one of three statuses: `todo`, `doing`, or `done`.
 
 ## Requirements
 
@@ -47,14 +47,14 @@ updated_at = "2026-04-21T10:00:00Z"
 ## CLI Interface
 
 
-- [x] act init                          # Create tasks.toml
-- [x] act add "Title" -d "Description"  # Add task
-- [x] act list                          # List all tasks
-- [x] act list --status todo            # Filter by status
-- [x] act show <id>                     # Show task details
-- [x] act edit <id> -t "New Title"      # Edit task
-- [x] act status <id> doing             # Update status
-- [x] act delete <id>                   # Remove task
+- [x] grind init                          # Create tasks.toml
+- [x] grind add "Title" -d "Description"  # Add task
+- [x] grind list                          # List all tasks
+- [x] grind list --status todo            # Filter by status
+- [x] grind show <id>                     # Show task details
+- [x] grind edit <id> -t "New Title"      # Edit task
+- [x] grind status <id> doing             # Update status
+- [x] grind delete <id>                   # Remove task
 
 
 ## Roadmap
@@ -82,10 +82,10 @@ updated_at = "2026-04-21T10:00:00Z"
 - [ ] Implement codefixed specified in [CODE_REVIEW.md](CODE_REVIEW.md)
 
 ### Milestone 4: Nice-to-Haves (Backlog)
-- [x] Quick add `act add`
+- [x] Quick add `grind add`
 - [ ] Task priorities
 - [ ] Due dates
-- [ ] Global config file (~/.config/act/)
+- [ ] Global config file (~/.config/grind/)
 - [ ] Export to JSON/CSV
 - [ ] Tab Completion for Task Ids
 

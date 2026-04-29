@@ -3,21 +3,6 @@
 version = 4
 
 [[package]]
-name = "act"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "chrono",
- "clap",
- "colored",
- "comfy-table",
- "nanoid",
- "serde",
- "thiserror",
- "toml",
-]
-
-[[package]]
 name = "android_system_properties"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -265,6 +250,21 @@ dependencies = [
  "libc",
  "r-efi",
  "wasip2",
+]
+
+[[package]]
+name = "grind"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "clap",
+ "colored",
+ "comfy-table",
+ "nanoid",
+ "serde",
+ "thiserror",
+ "toml",
 ]
 
 [[package]]

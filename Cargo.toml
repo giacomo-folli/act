@@ -1,8 +1,16 @@
 [package]
 authors = ["Giacomo Folli <giacomofolli@proton.me>"]
-name = "act"
+name = "grind"
+description = "A task management CLI tool"
 version = "0.1.0"
 edition = "2024"
+readme = "README.md"
+repository = "https://github.com/giacomo-folli/act"
+homepage = "https://github.com/giacomo-folli/act"
+license = "MIT OR Apache-2.0"
+keywords = ["taskmanagement", "cli"]
+categories = ["command-line-utilities"]
+
 
 [dependencies]
 serde = { version = "1.0.228", features = ["derive"] }
