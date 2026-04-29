@@ -78,14 +78,14 @@ updated_at = "2026-04-21T10:00:00Z"
 - [x] Fix `save` ignoring errors
 
 ### Milestone 3: Polish (Week 3)
-- [ ] Consider switching to `ratatui`
+- [ ] Global config file (~/.config/grind/)
 - [ ] Implement codefixed specified in [CODE_REVIEW.md](CODE_REVIEW.md)
 
 ### Milestone 4: Nice-to-Haves (Backlog)
 - [x] Quick add `grind add`
+- [ ] Consider switching to `ratatui`
 - [ ] Task priorities
 - [ ] Due dates
-- [ ] Global config file (~/.config/grind/)
 - [ ] Export to JSON/CSV
 - [ ] Tab Completion for Task Ids
 
