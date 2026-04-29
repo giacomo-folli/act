@@ -78,7 +78,7 @@ updated_at = "2026-04-21T10:00:00Z"
 - [x] Fix `save` ignoring errors
 
 ### Milestone 3: Polish (Week 3)
-- [ ] Global config file (~/.config/grind/)
+- [x] Global config file (~/.config/grind/)
 - [ ] Implement codefixed specified in [CODE_REVIEW.md](CODE_REVIEW.md)
 
 ### Milestone 4: Nice-to-Haves (Backlog)

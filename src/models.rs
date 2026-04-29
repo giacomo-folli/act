@@ -18,12 +18,12 @@ pub struct Storage {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Task {
-    pub id: String,
-    pub title: String,
+    pub id:          String,
+    pub title:       String,
     pub description: Option<String>,
-    pub status: DefaultStatus,
-    pub created_at: String,
-    pub updated_at: String,
+    pub status:      DefaultStatus,
+    pub created_at:  String,
+    pub updated_at:  String,
 }
 
 impl Task {
@@ -33,7 +33,7 @@ impl Task {
             status: DefaultStatus::Todo,
             created_at: chrono::Local::now().to_rfc2822(),
             updated_at: chrono::Local::now().to_rfc2822(),
-            description: Some(String::new()),
+            description: None,
             title,
         }
     }

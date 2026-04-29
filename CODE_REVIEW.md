@@ -7,8 +7,8 @@
 - [x] Align README and the actual data model.
 - [ ] Rust methods and robustness
 - [ ] Inconsistent error types
-- [ ] Description default in `Task::new`
-- [ ] Destructive `init` on an existing file
+- [x] Description default in `Task::new`
+- [x] Destructive `init` on an existing file
 - [ ] Time management can be improved
 
 
