@@ -51,7 +51,6 @@ updated_at = "2026-04-21T10:00:00Z"
 - [x] grind add "Title" -d "Description"  # Add task
 - [x] grind list                          # List all tasks
 - [x] grind list --status todo            # Filter by status
-- [x] grind show <id>                     # Show task details
 - [x] grind edit <id> -t "New Title"      # Edit task
 - [x] grind status <id> doing             # Update status
 - [x] grind delete <id>                   # Remove task
@@ -66,7 +65,7 @@ updated_at = "2026-04-21T10:00:00Z"
 - [x] `list` with basic table output
 
 ### Milestone 2: CRUD (Week 2)
-- [x] `show`, `edit`, `status`, `delete` commands
+- [x] `edit`, `status`, `delete` commands
 - [x] UUID generation for task IDs
 - [x] Timestamps (created_at, updated_at)
 - [x] Input validation
@@ -79,7 +78,7 @@ updated_at = "2026-04-21T10:00:00Z"
 
 ### Milestone 3: Polish (Week 3)
 - [x] Global config file (~/.config/grind/)
-- [ ] Implement codefixed specified in [CODE_REVIEW.md](CODE_REVIEW.md)
+- [x] Write tests for core functions
 
 ### Milestone 4: Nice-to-Haves (Backlog)
 - [ ] Multiple storage files support
@@ -113,14 +112,6 @@ src/
 ├── errors.rs     # Custom errors
 └── models.rs     # Task struct, Status enum
 ```
-
-## Success Criteria
-
-- [ ] All CRUD operations work via CLI
-- [ ] `tasks.toml` is human-readable and editable
-- [ ] List view is scannable with color-coded statuses
-- [ ] No panics on invalid input
-- [ ] Single `cargo install` deployment
 
 ## Mockup
 ![alt text](image.png)
