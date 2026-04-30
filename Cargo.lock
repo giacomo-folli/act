@@ -296,7 +296,6 @@ dependencies = [
  "dirs",
  "nanoid",
  "serde",
- "thiserror",
  "toml",
 ]
 
