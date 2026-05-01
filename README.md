@@ -79,6 +79,8 @@ updated_at = "2026-04-21T10:00:00Z"
 ### Milestone 3: Polish (Week 3)
 - [x] Global config file (~/.config/grind/)
 - [x] Write tests for core functions
+- [ ] Implement codefixed specified in [CODE_REVIEW.md](CODE_REVIEW.md)
+- [ ] Input validation, Args minimum lenght (titles, params, etc...)
 
 ### Milestone 4: Nice-to-Haves (Backlog)
 - [ ] Multiple storage files support
@@ -86,7 +88,6 @@ updated_at = "2026-04-21T10:00:00Z"
 - [ ] Consider switching to `ratatui`
 - [ ] Task priorities
 - [ ] Due dates
-- [ ] Export to JSON/CSV
 - [ ] Tab Completion for Task Ids
 
 ## Tech Stack

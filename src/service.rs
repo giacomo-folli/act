@@ -22,6 +22,22 @@ impl TaskService {
         Self { storage }
     }
 
+    pub fn search_alias(&self, task_alias: String) -> Option<String> {
+        let tasks = self.storage.load().expect("Failed to read tasks file");
+
+        if let Some(found) = tasks.iter().find(|t| t.id == task_alias) {
+            Some(found.id.clone())
+        } else if let Some(ff) = tasks.iter().find(|t| t.title == task_alias) {
+            Some(ff.id.clone())
+        } else if let Some(ff) =
+            tasks.iter().find(|t| t.id.starts_with(&task_alias))
+        {
+            Some(ff.id.clone())
+        } else {
+            None
+        }
+    }
+
     pub fn list_tasks(
         &self,
         filter: Option<DefaultStatus>,
@@ -52,11 +68,20 @@ impl TaskService {
 
     pub fn edit_task(
         &self,
-        task_id: &str,
+        task_alias: &str,
         title: Option<String>,
         description: Option<String>,
     ) -> anyhow::Result<()> {
         let mut tasks = self.storage.load()?;
+        let task_id = match self.search_alias(task_alias.to_string()) {
+            Some(s) => s,
+            None => {
+                return Err(
+                    TaskError::TaskNotFound(task_alias.to_string()).into()
+                );
+            },
+        };
+
         if let Some(task) = tasks.iter_mut().find(|t| t.id == task_id) {
             if let Some(desc) = description {
                 task.description = Some(desc);
@@ -73,10 +98,19 @@ impl TaskService {
 
     pub fn update_status(
         &self,
-        task_id: &str,
+        task_alias: &str,
         status: DefaultStatus,
     ) -> anyhow::Result<()> {
         let mut tasks = self.storage.load()?;
+        let task_id = match self.search_alias(task_alias.to_string()) {
+            Some(s) => s,
+            None => {
+                return Err(
+                    TaskError::TaskNotFound(task_alias.to_string()).into()
+                );
+            },
+        };
+
         if let Some(task) = tasks.iter_mut().find(|t| t.id == task_id) {
             task.status = status;
             task.update_time();
@@ -86,8 +120,17 @@ impl TaskService {
         }
     }
 
-    pub fn delete_task(&self, task_id: &str) -> anyhow::Result<()> {
+    pub fn delete_task(&self, task_alias: &str) -> anyhow::Result<()> {
         let mut tasks = self.storage.load()?;
+        let task_id = match self.search_alias(task_alias.to_string()) {
+            Some(s) => s,
+            None => {
+                return Err(
+                    TaskError::TaskNotFound(task_alias.to_string()).into()
+                );
+            },
+        };
+
         if tasks.iter().any(|t| t.id == task_id) {
             tasks.retain(|t| t.id != task_id);
             self.storage.save(&tasks)
